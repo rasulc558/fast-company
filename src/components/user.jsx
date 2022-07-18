@@ -13,14 +13,13 @@ const Users = () => {
         setUsers((prevState)=>prevState.filter(user => user._id != userId))
     }
 
-    const renderPhrase = number => {
-        
+    const renderPhrase = number => { // не надо писать повторяющеяся код
         if(number == 0) return <span className='badge bg-danger'>Никто с тобой не тусанет</span>
         if(number>1 && number <5) return <span className='badge bg-primary'>{number} человека тусанут с тобой сегодня</span>
         return <span className='badge bg-primary'>{number} человек тусанут с тобой сегодня</span>
     }
 
-    function renderBadge(badge) {
+    function renderBadge(badge) { // нет смысла в такой функции
          return `badge m-1 bg-${badge}`
     }
 
@@ -46,8 +45,8 @@ const Users = () => {
     }
 
     const renderTable =()=> {
-        return (users.length==0)? null: 
-                
+        return {
+            users.length > 0 ??  
             <table className="table">
                 <thead>
                     <tr>
