@@ -1,23 +1,33 @@
-import React, { useState } from "react";
-import Qualities from "./qualities";
-
-const User = ({ user, onDelete, onToggleBookMark }) => {
+import React from "react";
+import Qualitie from "./qualities";
+import BookMark from "./bookmarks";
+const User = ({
+  _id,
+  name,
+  qualities,
+  profession,
+  completedMeetings,
+  rate,
+  onDelete,
+  bookmark,
+  onToggleBookMark,
+}) => {
   return (
-    <tr key={user._id}>
-      <td>{user.name}</td>
-      <Qualities userQualities={user.qualities} />
-      <td>{user.profession.name}</td>
-      <td>{user.completedMeetings}</td>
+    <tr>
+      <td>{name}</td>
       <td>
-        <i
-          className={user.bookmark ? "bi bi-bookmark-fill" : "bi bi-bookmark"}
-          onClick={() => onToggleBookMark(user._id)}
-          style={{ cursor: "pointer" }}
-        ></i>
+        {qualities.map((qual) => (
+          <Qualitie key={qual._id} {...qual} />
+        ))}
       </td>
-      <td>{user.rate} /5</td>
+      <td>{profession.name}</td>
+      <td>{completedMeetings}</td>
+      <td>{rate} /5</td>
       <td>
-        <button onClick={() => onDelete(user._id)} className="btn btn-danger">
+        <BookMark status={bookmark} onClick={() => onToggleBookMark(_id)} />
+      </td>
+      <td>
+        <button onClick={() => onDelete(_id)} className="btn btn-danger">
           delete
         </button>
       </td>

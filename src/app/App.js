@@ -1,7 +1,8 @@
+/* eslint semi: "error" */
 import React, { useState } from "react";
-import api from "./api";
-import SearchStatus from "./components/searchStatus";
 import Users from "./components/users";
+import SearchStatus from "./components/searchStatus";
+import api from "./api";
 
 function App() {
   const [users, setUsers] = useState(api.users.fetchAll());
@@ -11,24 +12,23 @@ function App() {
   };
 
   const handleToggleBookMark = (id) => {
-    setUsers((prevstate) =>
-      prevstate.map((user) => {
+    setUsers(
+      users.map((user) => {
         if (user._id === id) {
           return { ...user, bookmark: !user.bookmark };
-        } else {
-          return user;
         }
+        return user;
       })
     );
   };
 
   return (
     <div>
-      <SearchStatus amountOfUsers={users.length} />
+      <SearchStatus length={users.length} />
       <Users
-        users={users}
         onDelete={handleDelete}
         onToggleBookMark={handleToggleBookMark}
+        users={users}
       />
     </div>
   );
