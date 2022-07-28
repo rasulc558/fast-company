@@ -1,8 +1,8 @@
-import { array } from "i/lib/util";
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { paginate } from "../utils/paginate";
 import Pagination from "./pagination";
 import User from "./user";
-import { paginate } from "../utils/paginate";
 
 const Users = ({ users, ...rest }) => {
   const count = users.length;
@@ -45,6 +45,10 @@ const Users = ({ users, ...rest }) => {
       />
     </>
   );
+};
+
+Users.propTypes = {
+  users: PropTypes.array.isRequired
 };
 
 export default Users;
