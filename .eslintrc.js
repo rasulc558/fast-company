@@ -13,10 +13,13 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
-    "comma-dangle": [0, "never"],
+    "comma-dangle": [2, "only-multiline"],
     semi: [2, "always"],
     indent: ["error", 2],
-    "space-before-function-paren": ["error", "never"],
+    "space-before-function-paren": [
+      "error",
+      { anonymous: "always", named: "never" }
+    ],
     quotes: [
       "error",
       "double",
