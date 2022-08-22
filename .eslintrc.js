@@ -15,7 +15,7 @@ module.exports = {
   rules: {
     "comma-dangle": [2, "only-multiline"],
     semi: [2, "always"],
-    indent: ["error", 2],
+    indent: [0, 2],
     "space-before-function-paren": [
       "error",
       { anonymous: "always", named: "never" }
