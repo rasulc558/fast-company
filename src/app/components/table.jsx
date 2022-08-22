@@ -9,13 +9,12 @@ const Table = ({ onSort, selectedSort, columns, data, children }) => {
       {children || (
         <>
           <TableHeader {...{ onSort, selectedSort, columns }} />
-          <TableBody {...{ data, columns }} />
+          <TableBody {...{ columns, data }} />
         </>
       )}
     </table>
   );
 };
-
 Table.propTypes = {
   onSort: PropTypes.func,
   selectedSort: PropTypes.object,
