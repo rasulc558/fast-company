@@ -63,4 +63,4 @@ SelectField.propTypes = {
   error: PropTypes.string
 };
 
-export default SelectField;
+export default React.memo(SelectField);
