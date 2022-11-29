@@ -1,34 +1,35 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-function TextAreaField({ label, name, value, onChange, error }) {
+const TextAreaField = ({ label, name, value, onChange, error }) => {
   const handleChange = ({ target }) => {
-    // console.log(target);
     onChange({ name: target.name, value: target.value });
   };
 
-  // const getInputClasses = () => {
-  //   return "form-control" + (error ? " is-invalid" : "");
-  // };
+  const getInputClasses = () => {
+    return "form-control" + (error ? " is-invalid" : "");
+  };
 
   return (
     <div className="mb-4">
-      <div className="form-floating">
+      <label htmlFor={name}> {label}</label>
+      <div className="input-group has-validation">
         <textarea
-          className="form-control"
-          placeholder="Leave a comment here"
-          id="floatingTextarea2"
-          style={{ height: "100px" }}
+          id={name}
           name={name}
           value={value}
           onChange={handleChange}
-        ></textarea>
-        <label htmlFor="floatingTextarea2">{label}</label>
+          className={getInputClasses()}
+        />
+
+        {error && <div className="invalid-feedback ">{error}</div>}
       </div>
     </div>
   );
-}
-
+};
+TextAreaField.defaultProps = {
+  type: "text"
+};
 TextAreaField.propTypes = {
   label: PropTypes.string,
   type: PropTypes.string,
@@ -38,4 +39,4 @@ TextAreaField.propTypes = {
   error: PropTypes.string
 };
 
-export default React.memo(TextAreaField);
+export default TextAreaField;
