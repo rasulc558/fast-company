@@ -1,13 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Quality from "./qualities";
+import { useQuality } from "../../../hooks/useQuality";
 
 const QualitiesList = ({ qualities }) => {
+  const { getQualityByIds, isLoading } = useQuality();
+
+  const qualitiesList = getQualityByIds(qualities);
+
   return (
     <>
-      {qualities.map((qual) => (
-        <Quality {...qual} key={qual._id} />
-      ))}
+      {!isLoading &&
+        qualitiesList.map((qual) => <Quality {...qual} key={qual._id} />)}
     </>
   );
 };
