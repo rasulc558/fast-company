@@ -1,8 +1,7 @@
 import React from "react";
-
 import PropTypes from "prop-types";
 
-const UserMeetingsCard = ({ meetings }) => {
+const MeetingsCard = ({ value }) => {
   return (
     <div className="card mb-3">
       <div className="card-body d-flex flex-column justify-content-center text-center">
@@ -10,14 +9,14 @@ const UserMeetingsCard = ({ meetings }) => {
           <span>Completed meetings</span>
         </h5>
 
-        <h1 className="display-1">{meetings}</h1>
+        <h1 className="display-1">{value}</h1>
       </div>
     </div>
   );
 };
 
-UserMeetingsCard.propTypes = {
-  meetings: PropTypes.number.isRequired
+MeetingsCard.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 
-export default React.memo(UserMeetingsCard);
+export default MeetingsCard;
