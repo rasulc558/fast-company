@@ -14,7 +14,7 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-  console.log(process.env.REACT_APP_FIREBASE_KEY);
+  // console.log(process.env.REACT_APP_FIREBASE_KEY);
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [error, setError] = React.useState(null);
@@ -34,8 +34,18 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       errorCatcher(error);
 
-      // const { code, message } = error.response.data.error;
-      console.log("sign In error useAuth ", error);
+      const { code, message } = error.response.data.error;
+
+      if (code === 400) {
+        if (message === "INVALID_PASSWORD") {
+          const errorObj = { password: "Неправильный пароль" };
+          throw errorObj;
+        }
+        if (message === "EMAIL_NOT_FOUND") {
+          const errorObj = { email: "Email введен некорректно " };
+          throw errorObj;
+        }
+      }
     }
   }
 
