@@ -5,7 +5,12 @@ import userServices from "../services/user.services";
 import { toast } from "react-toastify";
 import { setToken } from "../services/localStorage.services";
 
-const httpAuth = axios.create();
+const httpAuth = axios.create({
+  baseURL: "https://identitytoolkit.googleapis.com/v1/",
+  params: {
+    key: process.env.REACT_APP_FIREBASE_KEY
+  }
+});
 
 const AuthContext = React.createContext();
 
@@ -14,16 +19,12 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-  // console.log(process.env.REACT_APP_FIREBASE_KEY);
-
   const [currentUser, setCurrentUser] = React.useState({});
   const [error, setError] = React.useState(null);
 
   async function signIn({ email, password }) {
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
-
     try {
-      const { data } = await httpAuth.post(url, {
+      const { data } = await httpAuth.post("accounts:signInWithPassword", {
         email,
         password,
         returnSecureToken: true
@@ -37,23 +38,19 @@ const AuthProvider = ({ children }) => {
       const { code, message } = error.response.data.error;
 
       if (code === 400) {
-        if (message === "INVALID_PASSWORD") {
-          const errorObj = { password: "Неправильный пароль" };
-          throw errorObj;
-        }
-        if (message === "EMAIL_NOT_FOUND") {
-          const errorObj = { email: "Email введен некорректно " };
-          throw errorObj;
+        switch (message) {
+          case "INVALID_PASSWORD":
+            throw new Error("Email или пароль введены некорректно");
+          default:
+            throw new Error("Слишком много попыток входа. Попробуйте позже");
         }
       }
     }
   }
 
   async function signUp({ email, password, ...rest }) {
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
-
     try {
-      const { data } = await httpAuth.post(url, {
+      const { data } = await httpAuth.post("accounts:signUp", {
         email,
         password,
         returnSecureToken: true
