@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router-dom";
 
 import Users from "./layouts/users";
 import Login from "./layouts/login";
@@ -9,6 +9,8 @@ import AuthProvider from "./hooks/useAuth";
 import { ProfessionProvider } from "./hooks/useProfession";
 import { QualityProvider } from "./hooks/useQuality";
 import { ToastContainer } from "react-toastify";
+import ProtectedRoute from "./components/common/protectedRoute";
+import LogOut from "./layouts/logOut";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -19,8 +21,9 @@ function App() {
         <ProfessionProvider>
           <QualityProvider>
             <Switch>
-              <Route path="/users/:userId?/:edit?" component={Users} />
+              <ProtectedRoute path="/users/:userId?/:edit?" component={Users} />
               <Route path="/login/:type?" component={Login} />
+              <Route path="/logout" component={LogOut} />
               <Route path="/" exact component={Main} />
               <Redirect to="/" />
             </Switch>

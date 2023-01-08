@@ -22,6 +22,7 @@ const RegistrForm = () => {
 
   const [data, setData] = useState({
     email: "",
+    name: "",
     password: "",
     profession: "",
     sex: "male",
@@ -51,6 +52,13 @@ const RegistrForm = () => {
     email: {
       isRequared: { message: "Электронная почта обязательна для заполнения" },
       isEmail: { message: "Email введен некорректно" }
+    },
+    name: {
+      isRequared: { message: "Имя обязательна для заполнения" },
+      min: {
+        message: "Имя должно состоять минимум из 3 символов",
+        value: 3
+      }
     },
     profession: { isRequared: { message: "Введите профессию" } },
     licence: {
@@ -113,6 +121,14 @@ const RegistrForm = () => {
         value={data.email}
         onChange={handleChange}
         error={errors.email}
+      />
+
+      <TextField
+        label="Имя"
+        name="name"
+        value={data.name}
+        onChange={handleChange}
+        error={errors.name}
       />
 
       <TextField

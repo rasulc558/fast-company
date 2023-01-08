@@ -1,13 +1,8 @@
 import React from "react";
-import Qualities from "./qualities";
 import PropTypes from "prop-types";
-import { useQuality } from "../../hooks/useQuality";
+import QualitiesList from "./qualities/qualitiesList";
 
 const QualitiesCard = ({ data }) => {
-  const { getQualityByIds, isLoading } = useQuality();
-
-  const qualitiesList = getQualityByIds(data);
-
   return (
     <div className="card mb-3">
       <div className="card-body d-flex flex-column justify-content-center text-center">
@@ -15,7 +10,7 @@ const QualitiesCard = ({ data }) => {
           <span>Qualities</span>
         </h5>
         <p className="card-text">
-          {!isLoading && <Qualities qualities={qualitiesList} />}
+          <QualitiesList qualities={data} />
         </p>
       </div>
     </div>
