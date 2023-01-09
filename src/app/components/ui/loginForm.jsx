@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 const LoginForm = () => {
   const [data, setData] = useState({ email: "", password: "", stayOn: false });
   const [errors, setErrors] = useState({});
+  const [enterError, setEnterError] = useState(null);
 
   const { signIn } = useAuth();
   const history = useHistory();
@@ -17,25 +18,15 @@ const LoginForm = () => {
       ...prevState,
       [target.name]: target.value
     }));
+    setEnterError(null);
   };
 
   const validatorConfig = {
     email: {
-      isRequared: { message: "Электронная почта обязательна для заполнения" },
-      isEmail: { message: "Email введен некорректно" }
+      isRequared: { message: "Электронная почта обязательна для заполнения" }
     },
     password: {
-      isRequared: { message: "Пароль обязательна для заполнения" },
-      isCapitalSymbol: {
-        message: "Пароль должен содержать хотя бы один заглавный символ"
-      },
-      isContainDigit: {
-        message: "Пароль должен содержать хотя бы одну цифру"
-      },
-      min: {
-        message: "Пароль должен состоять минимум из 8 символов",
-        value: 8
-      }
+      isRequared: { message: "Пароль обязательна для заполнения" }
     }
   };
 
@@ -60,12 +51,14 @@ const LoginForm = () => {
 
     try {
       await signIn(data);
-      history.push("/");
+      history.push(
+        history.location.state.from.pathname
+          ? history.location.state.from.pathname
+          : "/"
+      );
     } catch (error) {
-      setErrors(error);
+      setEnterError(error.message);
     }
-
-    // console.log(data);
   };
 
   return (
@@ -91,9 +84,11 @@ const LoginForm = () => {
         Оставаться в системе
       </CheckBoxField>
 
+      {enterError && <p className="text-danger">{enterError}</p>}
+
       <button
         type="submit"
-        disabled={!isValid}
+        disabled={!isValid || enterError}
         className="btn btn-primary w-100 mx-auto"
       >
         Submit

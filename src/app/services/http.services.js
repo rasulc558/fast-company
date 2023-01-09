@@ -1,15 +1,43 @@
 import axios from "axios";
 import configFile from "../config.json";
+import { httpAuth } from "../hooks/useAuth";
+import localsStorageService from "./localStorage.services";
 
 const request = axios.create({ baseURL: configFile.FIRE_BASE_URL });
 
 request.interceptors.request.use(
-  function (config) {
+  async function (config) {
     if (configFile.isFireBase) {
       const containSlash = /\/$/.test(config.url);
       config.url =
         (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
+      // далее обновляем рефреш токен
+      const expiresDate = localsStorageService.getTokenExpiresDate();
+      const refreshToken = localsStorageService.getRefreshToken();
+
+      if (refreshToken && expiresDate < Date.now()) {
+        const { data } = await httpAuth.post("token", {
+          grant_type: "refresh_token",
+          refresh_token: refreshToken
+        });
+
+        localsStorageService.setToken({
+          idToken: data.id_token,
+          localId: data.user_id,
+          refreshToken: data.refresh_token,
+          expiresIn: data.expires_in
+        });
+      }
+
+      const accessToken = localsStorageService.getAccessToken();
+      if (accessToken) {
+        config.params = {
+          ...config.params,
+          auth: accessToken
+        };
+      }
     }
+
     return config;
   },
   function (error) {
@@ -18,11 +46,11 @@ request.interceptors.request.use(
 );
 
 function transformData(data) {
-  return data
+  return data && !data._id
     ? Object.keys(data).map((key) => {
         return { ...data[key] };
       })
-    : [];
+    : data;
 }
 
 request.interceptors.response.use(

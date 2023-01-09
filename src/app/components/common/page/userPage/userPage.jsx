@@ -1,89 +1,15 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import api from "../../../../api";
+import React from "react";
 import UserCard from "../../../ui/userCard";
 import QualitiesCard from "../../../ui/qualitiesCard";
 import MeetingsCard from "../../../ui/meetingsCard";
 import Comments from "../../../ui/comments";
-// import { useHistory } from "react-router-dom";
-// import UserInfoCard from "./userComponents/userInfoCard"; // 1
-// import UserQualityCard from "./userComponents/userQualityCard"; // 1
-// import UserMeetingsCard from "./userComponents/userMeetingsCard"; // 1
-// import UserCommentList from "./userComponents/userCommentsList";
-// import UsersCommentsComponent from "./userComponents/UsersCommentsComponent ";
+import PropTypes from "prop-types";
+import { useUsers } from "../../../../hooks/useUsers";
+import { CommentProvider } from "../../../../hooks/useComments";
 
 const UserPage = ({ userId }) => {
-  // const history = useHistory();
-  const [user, setUser] = useState();
-  // const [allUsers, setAllUsers] = useState(); // 1
-  // const [data, setData] = useState({}); //
-  // const [commentForUser, setCommentForUser] = useState(); //
-
-  useEffect(() => {
-    api.users.getById(userId).then((data) => setUser(data));
-
-    //   // 1
-    //   api.users
-    //     .fetchAll()
-    //     .then((users) =>
-    //       setAllUsers(
-    //         users.map((user) => ({ label: user.name, value: user._id }))
-    //       )
-    //     );
-
-    //   api.comments
-    //     .fetchCommentsForUser(userId)
-    //     .then((comments) => setCommentForUser(comments));
-  }, []);
-
-  // function updateComments() {
-  //   api.comments
-  //     .fetchCommentsForUser(userId)
-  //     .then((comments) => setCommentForUser(comments));
-  // }
-
-  // const handleCommentDelete = useCallback((commentId) => {
-  //   api.comments.remove(commentId).then(updateComments);
-  // }, []);
-
-  // const handleChange = useCallback((target) => {
-  //   setData((prevState) => ({
-  //     ...prevState,
-  //     [target.name]: target.value
-  //   }));
-  // }, []);
-
-  // const handleClick = useCallback(() => {
-  //   history.push(history.location.pathname + "/edit");
-  // }, []);
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   if (data.comment && data.selectedUser) {
-  //     const newComment = {
-  //       userId: data.selectedUser,
-  //       pageId: userId, // страница на которой оставили комментарий
-  //       content: data.comment
-  //     };
-
-  //     // console.log("new", newComment);
-
-  //     api.comments.add(newComment).then(() => {
-  //       setData({});
-  //       updateComments();
-  //     });
-  //   }
-  // };
-
-  // useEffect(() => console.log("comment", commentForUser));
-
-  // const isValid = () => {
-  //   if (data.selectedUser && data.comment) {
-  //     return false;
-  //   }
-  //   return true;
-  // };
+  const { getUserById } = useUsers();
+  const user = getUserById(userId);
 
   if (user) {
     return (
@@ -93,43 +19,12 @@ const UserPage = ({ userId }) => {
             <UserCard user={user} />
             <QualitiesCard data={user.qualities} />
             <MeetingsCard value={user.completedMeetings} />
-
-            {/* <UserInfoCard
-              userName={user.name}
-              profession={user.profession.name}
-              rate={user.rate}
-              onClick={handleClick}
-            />
-
-            <UserQualityCard qualities={user.qualities} />
-
-            <UserMeetingsCard meetings={user.completedMeetings} /> */}
           </div>
 
           <div className="col-md-8">
-            <Comments />
-
-            {/* <UserCommentList
-              allUsers={allUsers}
-              data={data}
-              handleChange={handleChange}
-              isValid={isValid}
-              onSubmit={handleSubmit}
-            />
-
-            <button
-              className="btn btn-primary"
-              onClick={() => console.log("comment", commentForUser)}
-            >
-              console
-            </button>
-
-            {commentForUser && (
-              <UsersCommentsComponent
-                commentForUser={commentForUser}
-                handleCommentDelete={handleCommentDelete}
-              />
-            )} */}
+            <CommentProvider>
+              <Comments />
+            </CommentProvider>
           </div>
         </div>
       </div>
