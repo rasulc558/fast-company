@@ -1,0 +1,6 @@
+{
+  "API_BASE_URL": "http://localhost:4000/api/v1/",
+  "FIRE_BASE_URL":
+    "https://fast-company-1d3b7-default-rtdb.europe-west1.firebasedatabase.app/",
+  "isFireBase": "true"
+}

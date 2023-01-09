@@ -10,14 +10,14 @@ export const useQuality = () => {
 };
 
 export const QualityProvider = ({ children }) => {
-  const [quality, setQuality] = React.useState([]);
+  const [qualities, setQualities] = React.useState([]);
   const [isLoading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
 
-  async function getQuality() {
+  async function getQualities() {
     try {
       const { content } = await qualityServices.fetchAll();
-      setQuality(content);
+      setQualities(content);
       setLoading(false);
     } catch (error) {
       errorCatcher(error);
@@ -29,14 +29,14 @@ export const QualityProvider = ({ children }) => {
     setError(message);
   }
 
-  function getQualityByIds(ids) {
-    return quality.filter((q) => {
-      return ids.includes(q._id);
+  function getQualityById(id) {
+    return qualities.find((q) => {
+      return q._id === id;
     });
   }
 
   React.useEffect(() => {
-    getQuality();
+    getQualities();
   }, []);
 
   React.useEffect(() => {
@@ -47,7 +47,7 @@ export const QualityProvider = ({ children }) => {
   }, [error]);
 
   return (
-    <QualityContext.Provider value={{ quality, isLoading, getQualityByIds }}>
+    <QualityContext.Provider value={{ qualities, isLoading, getQualityById }}>
       {children}
     </QualityContext.Provider>
   );
