@@ -77,7 +77,8 @@ const httpService = {
   get: request.get,
   put: request.put,
   post: request.post,
-  delete: request.delete
+  delete: request.delete,
+  patch: request.patch
 };
 
 export default httpService;
