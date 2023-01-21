@@ -1,23 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import App from "./app/App";
-import "./index.css";
-import "bootstrap/dist/css/bootstrap.css";
 import { createStore } from "./app/store/createStore";
 import { Provider } from "react-redux";
+import history from "./app/utils/history";
+import "bootstrap/dist/css/bootstrap.css";
+import "./index.css";
 
 const store = createStore();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <Router history={history}>
       <React.StrictMode>
         <App />
       </React.StrictMode>
-    </BrowserRouter>
+    </Router>
   </Provider>
 );
 

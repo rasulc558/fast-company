@@ -9,8 +9,8 @@ import {
 } from "../../../store/qualities";
 
 const QualitiesList = ({ qualities }) => {
-  const dispatch = useDispatch();
   const isLoading = useSelector(getQualitiesLoadingStatus());
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     dispatch(loadQualitiesList());
@@ -20,11 +20,12 @@ const QualitiesList = ({ qualities }) => {
 
   const qualitiesList = useSelector(getQualitiesById(qualities));
 
+  console.log("qualitiesList", qualitiesList); //
+
   return (
     <>
-      {qualitiesList.map((qual) => (
-        <Quality {...qual} key={qual._id} />
-      ))}
+      {qualitiesList &&
+        qualitiesList.map((qual) => <Quality {...qual} key={qual._id} />)}
     </>
   );
 };

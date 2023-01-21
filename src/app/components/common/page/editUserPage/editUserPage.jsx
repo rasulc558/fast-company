@@ -16,18 +16,20 @@ import {
   getProfessions,
   getProfessionsLoadingStatus
 } from "../../../../store/professions";
+import { getCurrentUserData } from "../../../../store/users";
 
 const EditUserPage = () => {
+  const [data, setData] = useState();
   const [isLoading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({});
   const history = useHistory();
 
-  const [data, setData] = useState();
-  const { currentUser, updateUserData } = useAuth();
+  const { updateUserData } = useAuth(); // поправить
+
+  const currentUser = useSelector(getCurrentUserData());
 
   const professions = useSelector(getProfessions());
   const professionLoading = useSelector(getProfessionsLoadingStatus());
-
-  const [errors, setErrors] = useState({});
 
   const qualities = useSelector(getQualities());
   const qualityLoading = useSelector(getQualitiesLoadingStatus());

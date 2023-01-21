@@ -1,6 +1,6 @@
 import axios from "axios";
 import configFile from "../config.json";
-import { httpAuth } from "../hooks/useAuth";
+import authServices from "./auth.services";
 import localsStorageService from "./localStorage.services";
 
 const request = axios.create({ baseURL: configFile.FIRE_BASE_URL });
@@ -16,10 +16,7 @@ request.interceptors.request.use(
       const refreshToken = localsStorageService.getRefreshToken();
 
       if (refreshToken && expiresDate < Date.now()) {
-        const { data } = await httpAuth.post("token", {
-          grant_type: "refresh_token",
-          refresh_token: refreshToken
-        });
+        const data = await authServices.refresh();
 
         localsStorageService.setToken({
           idToken: data.id_token,
