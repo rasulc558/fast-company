@@ -10,7 +10,7 @@ const QualitiesCard = ({ data }) => {
           <span>Qualities</span>
         </h5>
         <p className="card-text">
-          {data && <QualitiesList qualities={data} />}
+          <QualitiesList qualities={data} />
         </p>
       </div>
     </div>

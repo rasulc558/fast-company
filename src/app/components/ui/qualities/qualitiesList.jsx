@@ -16,16 +16,15 @@ const QualitiesList = ({ qualities }) => {
     dispatch(loadQualitiesList());
   }, []);
 
-  if (isLoading) return "loading";
-
   const qualitiesList = useSelector(getQualitiesById(qualities));
 
-  console.log("qualitiesList", qualitiesList); //
+  if (isLoading) return "loading";
 
   return (
     <>
-      {qualitiesList &&
-        qualitiesList.map((qual) => <Quality {...qual} key={qual._id} />)}
+      {qualitiesList.map((qual) => (
+        <Quality {...qual} key={qual._id} />
+      ))}
     </>
   );
 };

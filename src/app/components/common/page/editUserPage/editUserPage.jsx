@@ -5,7 +5,6 @@ import MultiSelectField from "../../form/multiSelectField";
 import RadioField from "../../form/radioField";
 import BackHistoryButton from "../../BackButton";
 import { validator } from "../../../../utils/validator";
-import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getQualities,
@@ -22,7 +21,6 @@ const EditUserPage = () => {
   const [isLoading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const currentUser = useSelector(getCurrentUserData());
 
@@ -52,7 +50,7 @@ const EditUserPage = () => {
     }
   }, [data]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
@@ -60,7 +58,6 @@ const EditUserPage = () => {
     const newData = { ...data, qualities: data.qualities.map((q) => q.value) };
 
     dispatch(updateUserData(newData));
-    history.push(`/users/${currentUser._id}`);
   };
 
   const qualitiesList = qualities.map((el) => ({
