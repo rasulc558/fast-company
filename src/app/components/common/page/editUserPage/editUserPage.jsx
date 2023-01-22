@@ -5,9 +5,8 @@ import MultiSelectField from "../../form/multiSelectField";
 import RadioField from "../../form/radioField";
 import BackHistoryButton from "../../BackButton";
 import { validator } from "../../../../utils/validator";
-import { useAuth } from "../../../../hooks/useAuth";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getQualities,
   getQualitiesLoadingStatus
@@ -16,15 +15,14 @@ import {
   getProfessions,
   getProfessionsLoadingStatus
 } from "../../../../store/professions";
-import { getCurrentUserData } from "../../../../store/users";
+import { getCurrentUserData, updateUserData } from "../../../../store/users";
 
 const EditUserPage = () => {
   const [data, setData] = useState();
   const [isLoading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
   const history = useHistory();
-
-  const { updateUserData } = useAuth(); // поправить
 
   const currentUser = useSelector(getCurrentUserData());
 
@@ -61,7 +59,7 @@ const EditUserPage = () => {
 
     const newData = { ...data, qualities: data.qualities.map((q) => q.value) };
 
-    await updateUserData(newData);
+    dispatch(updateUserData(newData));
     history.push(`/users/${currentUser._id}`);
   };
 

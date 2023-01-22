@@ -57,6 +57,11 @@ const usersSlice = createSlice({
       state.entities = null;
       state.isLoggedIn = false;
       state.auth = null;
+    },
+    userUpdate(state, action) {
+      state.entities = state.entities.map((user) =>
+        user._id === action.payload._id ? action.payload : user
+      );
     }
   }
 });
@@ -70,7 +75,8 @@ const {
   authRequestFailed,
   userCreated,
   authRequestSuccess,
-  userLogedOut
+  userLogedOut,
+  userUpdate
 } = actions;
 
 // auth block
@@ -99,6 +105,16 @@ export const logOut = () => (dispatch) => {
   dispatch(userLogedOut());
 
   history.push("/");
+};
+
+export const updateUserData = (data) => async (dispatch) => {
+  console.log("update data", data);
+  try {
+    const { content } = await userServices.update(data);
+    dispatch(userUpdate(content));
+  } catch (error) {
+    dispatch(usersRequestFailed(error.message));
+  }
 };
 
 export const signUp =
